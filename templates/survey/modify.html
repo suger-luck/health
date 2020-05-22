@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+    <script src="{% static 'js/jquery.1.10.2.min.js' %}" ></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+</head>
+<script>
+    $(function () {
+        $('#a').click(function () {
+            // 清空锁定：错误需要改
+            document.getElementById('name').disabled = ''
+        })
+    })
+</script>
+<body>
+<form>
+    <!-- 修改密码等一系列信息  5.20未完成-->
+    <div class="block">
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name" value="{{ name }}" disabled="disabled">
+        <input type="submit" id="a" value="修改">
+    </div>
+    <div class="block">
+        <!-- 设置输入框不能被编辑 -->
+        <label for="stu_id">学号/工号:</label>
+        <input type="text" id="stu_id" name="stu_id" value="{{ stu_id }}" disabled="disabled">
+    </div>
+    <div class="block">
+        <label for="college">学院/部门:</label>
+        <input type="text" id="college" name="college" value="{{ college }}">
+        <div id="college_c" ></div>
+    </div>
+    <div class="block">
+        <label for="password_1">原密码:</label>
+        <input type="password" name="password" id="password" value="{{ password }}">
+        <!-- 验证原密码是否正确 -->
+        <div id="pass_c" ></div>
+    </div>
+    <div class="block">
+        <label for="password_2">新密码:</label>
+        <input type="password" name="password_1" id="password_1">
+    </div>
+    <div class="block">
+        <label for="password_2">新密码(重复):</label>
+        <input type="password" name="password_2" id="password_2">
+        <!-- 验证新的密码是否一致 -->
+        <div id="pass_1"></div>
+    </div>
+    <div class="block">
+        <label for="stu_class">班级(职工可不填):</label>
+        <input type="text" name="stu_class" value="{{ stu_class }}">
+    </div>
+    <div class="block">
+        <input type="submit" id="btn" value="提交">
+        <a href="{% url 'survey:index' %}">返回</a>
+    </div>
+</form>
+</body>
+</html>

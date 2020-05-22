@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="{% static 'js/jquery.1.10.2.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+    <script type="text/javascript">
+        function myfun() {
+            <!-- 删除用户名的提示 -->
+            $('#username_c').empty().clear;
+            // 获取值
+                var username = $('#username').val();
+                $.ajax({
+                'url' : '{% url 'survey:login_user' %}',
+                'type' : 'get',
+                'data' : {
+                    'username' : username
+                },
+                success:function (data) {
+                    if (data.c) {
+                }
+                    else{
+                        $('#username_c').show().html("该账户还没有注册")
+                    }
+                }
+            })
+        }
+        $(function () {
+            $('#login').click(function () {
+                // 1.获取用户名和密码
+                username = $('#username').val();
+                password = $('#password').val();
+                // 获取复选框的选中
+                rember = document.getElementById('rember').checked;
+                // 发起请求
+                $.ajax({
+                    'url' : '{% url 'survey:login_check' %}',
+                    'type' : 'post',
+                    'data' : {
+                        'username' : username,
+                        'password' : password,
+                        'rember' : rember,
+                        "csrfmiddlewaretoken":'{{  csrf_token  }}'
+                    },
+                    'dataType' : 'json',
+                }).success(function (data) {
+                    //登录返回
+                    // 登录成功{'res' : 1}
+                    // 登录失败{'res' : 0}
+                    if (data.res == 0){
+                        $('#errmsg').show().html('用户名或密码错误')
+                    }
+                    else{
+                        location.href = '{% url 'survey:index' %}'
+                    }
+                })
+            })
+            // 注册
+            $('#registered').click(function () {
+                $.ajax().success(location.href = '{% url 'survey:registered' %}')
+            })
+        })
+    </script>
+    <style>
+        #errmsg{
+            display: none;
+            color: red;
+        }
+        #username_c{
+            display: none;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="block">
+    <label for="username">账号:</label>
+    <input type="text" id="username" name="username" value="{{ username }}" onchange="myfun()" placeholder="请输入学号/工号">
+</div>
+<div class="block">
+    <lable id="username_c"></lable>
+</div>
+<div class="block">
+    <label for="password">密码:</label>
+    <input type="password" id="password" name="password" value="{{ password }}" >
+</div>
+<div class="block">
+    <label></label>
+    <input type="checkbox" id="rember">两周内免密登录
+</div>
+<div class="block">
+    <label></label>
+    <input type="submit" id="login"  value="登录">
+    <input type="submit" id="registered"  value="注册">
+</div>
+<div class="block">
+    <label id="errmsg"></label>
+</div>
+</body>
+</html>

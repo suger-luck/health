@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="{% static 'js/jquery.1.10.2.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form.css' %}">
+    <script type="text/javascript">
+        // 当用户填写学号的时候失去焦点后查询数据库判断id是否在数据库中
+        function myfun() {
+            <!-- 删除用户名的提示 -->
+            $('#stu_id_c').empty().clear
+            {#$('#stu_id_c').clearQueue();#}
+            {#var x=document.getElementById("stu_id");#}
+            {#x.value=x.value.toUpperCase();#}
+            {#alert(1)#}
+            // 获取值
+                var stu_id = $('#stu_id').val();
+                $.ajax({
+                'url' : '{% url 'survey:check_id' %}',
+                'type' : 'get',
+                'data' : {
+                    'stu_id' : stu_id
+                },
+                success:function (data) {
+                    if (data.status) {
+                        $('#stu_id_c').show().html("学号/工号已经注册")
+                }
+                    else{
+                    }
+                }
+            })
+        }
+        function greeting(){
+            // 清除提示
+            $('#name_c').empty().clear;
+            $('#stu_id_c').empty().clear;
+            $('#college_c').empty().clear;
+            $('#pass_c').empty().clear;
+            $('#errmsg').empty().clear;
+
+            // 获取值
+            stu_name = $('#name').val();
+            stu_id = $('#stu_id').val();
+            college = $('#college').val();
+            pwd1 = $("#password_1").val();
+            pwd2 = $('#password_2').val();
+
+            if (stu_name == ""){
+                $('#name_c').show().html('姓名不能为空');
+                return false
+            }
+            if (stu_id == ''){
+                $('#stu_id_c').show().html('学号不能为空');
+                return false
+            }
+            if (college == ''){
+                $('#college_c').show().html('学院/部门不能为空');
+                return false
+            }
+            if ( pwd1 == ""){
+                {#alert(1)#}
+                $('#pass_c').show().html('密码不能为空');
+                return false
+            }else{
+                if ( pwd1 != pwd2 ){
+                {#location.href = '{% url 'survey:login' %}'#}
+                $('#errmsg').show().html('两次密码输入的不一致');
+                    return false
+                } else{
+                    return true
+                }
+            }
+        }
+    </script>
+    <style>
+        #errmsg{
+            display: none;
+            color: red;
+        }
+        #name_c{
+            display: none;
+            color: red;
+        }
+        #college_c{
+            display: none;
+            color: red;
+        }
+        #pass_c{
+            display: none;
+            color: red;
+        }
+        #stu_id_c{
+            display: none;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<form method="post" action="{% url 'survey:registered_check' %}"  onsubmit=" return greeting()">
+    {% csrf_token %}
+    <div class="block">
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name" >
+        <div id="name_c" ></div>
+    </div>
+    <div class="block">
+        <label for="stu_id">学号/工号:</label>
+        <input type="text" id="stu_id" name="stu_id" onchange="myfun()">
+        <div id="stu_id_c" ></div>
+    </div>
+    <div class="block">
+        <label for="college">学院/部门:</label>
+        <input type="text" id="college" name="college" >
+        <div id="college_c" ></div>
+    </div>
+    <div class="block">
+        <label for="password_1">密码:</label>
+        <input type="password" name="password_1" id="password_1">
+        <div id="pass_c" ></div>
+    </div>
+    <div class="block">
+        <label for="password_2">密码(重复):</label>
+        <input type="password" name="password_2" id="password_2">
+    </div>
+    <div class="block">
+        <label for="stu_class">班级(职工可不填):</label>
+        <input type="text" name="stu_class">
+    </div>
+    <div class="block">
+        <!-- 提交错误提示 -->
+        <input type="submit" id="'btn" value="提交">
+        <a href="{% url 'survey:login' %}">返回</a>
+    </div>
+    <div id="errmsg"></div>
+</form>
+</body>
+</html>

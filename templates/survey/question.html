@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>调查问卷</title>
+    <script src="{% static 'js/jquery.1.10.2.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form_question.css' %}">
+    <script type="text/javascript">
+        function greeting(){
+            // 1. 获取所有信息
+                temp = $('input[name=temp]').val();
+                heat = $("input[name=heat]:checked").val();
+                sick = $("input[name=sick]:checked").val();
+                overseas = $("input[name=overseas]:checked").val();
+                contact = $("input[name=contact]:checked").val();
+                high_rish  =$('input[name=high_rish]:checked').val();
+                virus = $("input[name=virus]:checked").val();
+                // alert(heat)
+                // 判断是否有未选中的
+                if((temp != '') &&(heat == '1'|| heat == '0') && ( sick == '1'|| sick == '0' ) && ( overseas == '1'|| overseas == '0' ) && ( contact == '1'|| contact == '0' ) && (high_rish == '1' || high_rish == '0') &&( virus == '1'|| virus == '0' )){
+                    {#$('#heat_c').empty().clear#}
+                    // alert(1);
+                    var sumbit =confirm('确认提交？？？');
+                    // alert(sumbit);
+                    // 提交东西
+                    if (sumbit == true)
+                        // 提交
+                        return true;
+                    else return false
+                }
+                else {
+                    alert('请填写完整再提交');
+                    return false
+                }
+
+            }
+
+    </script>
+</head>
+<body>
+<form action="{% url 'survey:question_sumbit' %}" method="get" id="form" onsubmit="return greeting()">
+    <div class="block">
+        <label>1.体温</label><br/>
+        <input name="temp" type="number" step="0.1" placeholder="输入温度,例如:36.5" value="none">℃
+    </div>
+    <div class="block">
+        <label>2.发热</label><br/>
+        <input type="radio" name="heat" value="1" >是
+        <input type="radio" name="heat" value="0">否
+    </div>
+    <div class="block">
+        <label>3.生病</label><br/>
+        <input type="radio" name="sick" value="1">是
+        <input type="radio" name="sick" value="0">否
+    </div>
+    <div class="block">
+        <label>4.境外旅居史</label><br/>
+        <input type="radio" name="overseas" value="1">是
+        <input type="radio" name="overseas" value="0">否
+    </div>
+    <div class="block">
+        <label>5.接触过境外人员</label><br/>
+        <input type="radio" name="contact" value="1">是
+        <input type="radio" name="contact" value="0">否
+    </div>
+    <div class="block">
+        <label>6.高风险地区停留过</label><br/>
+        <input type="radio" name="high_rish" value="1">是
+        <input type="radio" name="high_rish" value="0">否
+    </div>
+    <div class="block">
+        <label>7.疑似/确诊/无症状感染者</label><br/>
+        <input type="radio" name="virus" value="1">是
+        <input type="radio" name="virus" value="0">否
+    </div>
+    <div class="block">
+        <label>8.备注:(如果有上述情况或其他症状请填写备注)</label><br/>
+        <input type="text" name="remarks" maxlength="300" placeholder="最长300个字符">
+    </div>
+    <div>
+        <label>
+            <input type="submit" id="submit">&emsp;<a href="{% url 'survey:index' %}">返回</a>
+        </label>
+    </div>
+</form>
+</body>
+</html>

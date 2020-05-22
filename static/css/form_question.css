@@ -1,0 +1,16 @@
+.block{
+        width: 400px;
+        display: block;
+        margin:5px 0;
+    }
+.center{
+        text-align: center;
+}
+label {
+        display: inline-block;
+        width: 500px;
+        text-align: left;
+}
+input,textarea{
+        vertical-align: top;
+}
